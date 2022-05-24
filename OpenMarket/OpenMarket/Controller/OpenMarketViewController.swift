@@ -24,6 +24,15 @@ final class OpenMarketViewController: UIViewController {
         fetchData(from: .productList(page: 1, itemsPerPage: 110))
         setupCollectionView()
         setupSegmentControl()
+        network?.fetchData(from:Endpoint.detailProduct , completionHandler: { result in
+            switch result {
+                
+            case .success(let data):
+                print(data.)
+            case .failure(_):
+                return
+            }
+        })
     }
     
     private func fetchData(from: Endpoint) {
@@ -52,9 +61,10 @@ final class OpenMarketViewController: UIViewController {
     }
         
     @objc private func didTappedaddButton() {
-        let asd = ProductRegistrationController()
+        let asd = UINavigationController(rootViewController: ProductRegistrationController()) 
         asd.modalPresentationStyle = .fullScreen
         self.present(asd, animated: true)
+        
     }
 
     @objc private func didChangeSegment(_ sender: UISegmentedControl) {

@@ -9,7 +9,7 @@ import UIKit
 enum Endpoint {
     case healthChecker
     case productList(page: Int, itemsPerPage: Int)
-    case detailProduct(id: Int)
+    case detailProduct
 }
 
 extension Endpoint {
@@ -19,8 +19,8 @@ extension Endpoint {
             return .makeForEndpoint("healthChecker")
         case .productList(let page, let itemsPerPage):
             return .makeForEndpoint("api/products?page_no=\(page)&items_per_page=\(itemsPerPage)")
-        case .detailProduct(let id):
-            return .makeForEndpoint("api/products/\(id)")
+        case .detailProduct:
+            return .makeForEndpoint("api/products/")
         }
     }
 }

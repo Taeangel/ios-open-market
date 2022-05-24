@@ -36,4 +36,5 @@ class URLHealthCheckerSessionTests: XCTestCase {
         }
         wait(for: [promise], timeout: 10)
     }
+    
 }
