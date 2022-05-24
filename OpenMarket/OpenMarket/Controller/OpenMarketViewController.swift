@@ -48,8 +48,15 @@ final class OpenMarketViewController: UIViewController {
     private func setupSegmentControl() {
         self.navigationItem.titleView = segmentControl
         segmentControl.addTarget(self, action: #selector(didChangeSegment), for: .valueChanged)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTappedaddButton))
     }
-    
+        
+    @objc private func didTappedaddButton() {
+        let asd = ProductRegistrationController()
+        asd.modalPresentationStyle = .fullScreen
+        self.present(asd, animated: true)
+    }
+
     @objc private func didChangeSegment(_ sender: UISegmentedControl) {
         
         guard let layoutType = LayoutType(rawValue: sender.selectedSegmentIndex) else {
