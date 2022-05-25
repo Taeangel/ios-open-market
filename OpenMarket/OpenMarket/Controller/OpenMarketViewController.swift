@@ -25,6 +25,32 @@ final class OpenMarketViewController: UIViewController {
         fetchData(from: .productList(page: 1, itemsPerPage: 110))
         setupCollectionView()
         setupSegmentControl()
+//        setupButton()
+//        let product = ProductRegistration(name: "zz", price: 10000, discountedPrice: 1, bargainPrice: 9999, currency: "KRW", secret: "password", descriptions: "dd", stock: 5)
+//
+//        var images: [Images] = []
+//        guard let asd = UIImage(systemName: "swift")?.jpegData(compressionQuality: 1) else {
+//            return
+//        }
+//        guard let asdd = UIImage(systemName: "swift")?.jpegData(compressionQuality: 1) else {
+//            return
+//        }
+//        let image = Images(fileName: "d", type: "jpeg", data: asd)
+//        images.append(image)
+//        let imaged = Images(fileName: "d", type: "jpeg", data: asdd)
+//        images.append(imaged)
+//        let imagef = Images(fileName: "d", type: "jpeg", data: asdd)
+//        images.append(imagef)
+//
+//        network?.post(params: product, images: images) { result in
+//            switch result {
+//            case .success(let data):
+//                print(data)
+//                return
+//            case .failure(_):
+//                return print("dd")
+//            }
+//        }
     }
     
     private func fetchData(from: Endpoint) {
@@ -51,13 +77,24 @@ final class OpenMarketViewController: UIViewController {
         collectionView?.register(GridCell.self, forCellWithReuseIdentifier: GridCell.identifier)
     }
     
+//    private func setupButton() {
+//        let button = UIBarButtonItem(
+//            barButtonSystemItem: .add,
+//            target: self,
+//            action: #selector(didTapButton)
+//        )
+//        navigationItem.rightBarButtonItem = button
+//    }
+    
     private func setupSegmentControl() {
-        self.navigationItem.titleView = segmentControl
+        navigationItem.titleView = segmentControl
         segmentControl.addTarget(self, action: #selector(didChangeSegment), for: .valueChanged)
     }
-    
+}
+
+// MARK: - action Method
+extension OpenMarketViewController {
     @objc private func didChangeSegment(_ sender: UISegmentedControl) {
-        
         
         if let currentLayout = LayoutType(rawValue: sender.selectedSegmentIndex) {
             layoutType = currentLayout
@@ -67,8 +104,15 @@ final class OpenMarketViewController: UIViewController {
             self.collectionView?.reloadData()
         }
     }
+    
+//    @objc private func didTapButton() {
+//        let vc = ViewController()
+//        let navigationController = UINavigationController(rootViewController: vc)
+//        navigationController.modalPresentationStyle
+//        }
 }
 
+// MARK: - flowLayoutDelegate
 extension OpenMarketViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -92,13 +136,14 @@ extension OpenMarketViewController: UICollectionViewDelegateFlowLayout {
         
         switch layoutType {
         case .list:
-            return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 15)
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         case .grid:
             return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         }
     }
 }
 
+// MARK: - collectionView DataSource, Delegate
 extension OpenMarketViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
