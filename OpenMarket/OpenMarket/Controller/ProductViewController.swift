@@ -120,7 +120,7 @@ class ProductViewController: UIViewController {
     }()
     
     func addImage(imageView: UIImageView) {
-        imagesStackView.insertArrangedSubview(imageView, at: .zero)
+        imagesStackView.insertArrangedSubview(imageView, at: imagesStackView.arrangedSubviews.count - 1)
     }
     
     func extractData() -> ProductInfomation {
@@ -169,7 +169,6 @@ class ProductViewController: UIViewController {
 }
 
 // MARK: - Keyboard
-
 
 extension ProductViewController {
     
