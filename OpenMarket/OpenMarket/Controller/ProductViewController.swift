@@ -93,11 +93,11 @@ extension ProductViewController {
             return
         }
         
-        let keyvoardHieght = keyboardFrame.cgRectValue.height
+        let keyboardHieght = keyboardFrame.cgRectValue.height
         
         if baseView.descriptionTextView.isFirstResponder {
             view.bounds.origin.y = 150
-            baseView.descriptionTextView.contentInset.bottom = keyvoardHieght - 150
+            baseView.descriptionTextView.contentInset.bottom = keyboardHieght - 150
         } else {
             view.bounds.origin.y = 0
             baseView.descriptionTextView.contentInset.bottom = 0

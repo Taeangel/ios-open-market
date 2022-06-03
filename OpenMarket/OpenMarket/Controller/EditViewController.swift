@@ -24,6 +24,7 @@ final class EditViewController: ProductViewController {
         managementType = ManagementType.edit
         setupNavigationItems()
         getDetailData()
+        setupKeyboardNotification()
     }
     
     init(product: DetailProduct) {
