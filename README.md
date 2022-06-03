@@ -1,5 +1,5 @@
 # 🎁 ios-open-market 
-> 프로젝트 기간 2022.05.09 ~ 2022.05.    
+> 프로젝트 기간 2022.05.09 ~ 2022.06.03    
 팀원 : [malrang](https://github.com/malrang-malrang) [Taeangel](https://github.com/Taeangel) / 리뷰어 : [stevenkim](https://github.com/stevenkim18)
 
 - [Ground Rules](#ground-rules)
@@ -78,8 +78,9 @@
 
 ---
 ## UML
-![](https://i.imgur.com/nFoLkJS.png)
-[miro](https://miro.com/welcomeonboard/UlJBT0lpTjdqYWkyaGtINmQwbFVQOU1WS1J5MnNtTlJDTEZkMjduNFVSZzdzT2Y5TVJzTjZ5UGRyMTlLQ25KdnwzNDU4NzY0NTIzMDc5MjMxMTI5?share_link_id=654547367472)
+![](https://i.imgur.com/9QfKHUz.jpg)
+
+[miro](https://miro.com/welcomeonboard/UlJBT0lpTjdqYWkyaGtINmQwbFVQOU1WS1J5MnNtTlJDTEZkMjduNFVSZzdzT2Y5TVJzTjZ5UGRyMTlLQ25KdnwzNDU4NzY0NTIzMDc5MjMxMTI5?share_link_id=742695123172)
 
 ---
 # STEP 1 구현
@@ -838,15 +839,177 @@
 ---      
 # STEP 3 구현
 >**상품 등록/수정 화면 구현**
->    
+>
 >--- 
 >## 고민했던 것들(트러블 슈팅)
+>1️⃣ **HTTP multipart/form-data, HTTP Method POST 구현하기** 
+>    
+>HTTP Method POST 를 구현하기 위해 multipart/form-data 가 무엇인지 알아야 했다.
 >
->---
->## 질문한것들
+>클라이언트가 서버에 데이터를 업로드 하기 위해서는 URLRequest header 에 Content - Type 속성 을 지정해 주어야 하고 multipart/form-data 는 서버로 제출될때 해당 데이터가 인코딩 되는 방법을 명시하는 entype 속성값 중하나이다.
 >
+>쉽게 얘기하자면 클라이언트에서 서버로 데이터를 업로드 해야 할때는 어떤 방식으로 인코딩되었는지 header 에 명시해 서버에 알려주어야 하고 해당 방식에 맞게 body 를 구성하여 서버로 업로드 해야 한다.
+>
+>이때 서버에 업로드할 body 의 형식(form)이 한단어라도 어긋난다면 서버에 업로드가 실패한다.
+>(어디서 형식이 잘못되었는지 어떤 오타가 났는지 한참을 찾았다🥲 )
+>
+>STEP1 에서 GET Method 를 구현했으니 POST 에서는 GET 과 비슷하지만 header 와 body 를 추가한 POST 를 구현하면 된다!
+>
+>```swift
+>func postData(
+>        params: ProductInfomation,
+>        completionHandler: @escaping (Result<Void, NetworkError>) -> Void) {
+>        
+>        guard var urlRequest = makeURLRequest(
+>            httpMethod: .post,
+>            url: Endpoint.productRegistration
+>        ) else {
+>            return completionHandler(.failure(.urlError))
+>        }
+>        
+>        let boundary = UUID().uuidString
+>        
+>        urlRequest.addValue(
+>            OpenMarket.identifier.description,
+>            forHTTPHeaderField: "identifier"
+>        )
+>        urlRequest.addValue(
+>            "multipart/form-data; boundary=\(boundary)",
+>            forHTTPHeaderField: "Content-Type"
+>        )
+>        
+>        urlRequest.httpBody = createBody(params: params, boundary: boundary)
+>        let task = session.dataTask(with: urlRequest) { _, urlResponse, error in
+>            
+>            guard error == nil else {
+>                completionHandler(.failure(.clientError))
+>                return
+>            }
+>            
+>            guard let httpResponse = urlResponse as? HTTPURLResponse,
+>                  (200...299).contains(httpResponse.statusCode) else {
+>                completionHandler(.failure(.statusCodeError))
+>                return
+>            }
+>            
+>            completionHandler(.success(()))
+>        }
+>        task.resume()
+>    }    
+>    
+>private func createBody(params: ProductInfomation, boundary: String) -> Data? {
+>        var body = Data()
+>        let newline = "\r\n"
+>        let boundaryPrefix = "--\(boundary)\r\n"
+>        let boundarySuffix = "\r\n--\(boundary)--\r\n"
+>        
+>        guard let product = try? Json.encoder.encode(params) else {
+>            return nil
+>        }
+>        
+>        body.appendString(boundaryPrefix)
+>        body.appendString("Content-Disposition: form-data; name=\"params\"")
+>        body.appendString(newline)
+>        body.appendString(newline)
+>        body.append(product)
+>        body.appendString(newline)
+>        
+>        guard let images = params.images else {
+>            return nil
+>        }
+>
+>        for image in images {
+>            body.appendString(boundaryPrefix)
+>            body.appendString("Content-Disposition: form-data; name=\"images\"; filename=\"\(image.fileName).jpeg\"")
+>            body.appendString(newline)
+>            body.appendString("Content-Type: image/\(image.type)")
+>            body.appendString(newline)
+>            body.appendString(newline)
+>            body.append(image.data)
+>            body.appendString(newline)
+>        }
+>
+>        body.appendString(boundarySuffix)
+>        return body
+>    }
+>```
+   
+>2️⃣ **클로저 참조, 캡쳐**
+    
+>3️⃣ **alert, dismiss 는 UI 작업이니까 main thread 에서!**
+>
+>alert, dismiss 작업을 비동기 메서드내부에서 사용했는데 에러가 발생했다.
+>    
+>![](https://i.imgur.com/ZybDllG.png)
+>
+>위의 이미지와 같이 백그라운드 스레드에서 레이아웃을 수정하면 안된다는 에러가 발생한다.
+>생각해보면 당연한것 이지만 alert, dismiss 는 App 의 화면에 보이는 것이기 때문에 mainThread 에서 작업을 해주어야한다.
+>
+>생각 없이 사용했다가 왜 에러가 발생하는지 이유를 몰라 코드를 한참 들여다 봤다.
+>코드 한줄을 작성하더라도 한줄한줄 어떠한 의미를 갖는지 올바르게 사용하는것인지 고민해보아야 할것같다.
+>    
+>4️⃣ **뷰컨트롤러 간의 중복되는 기능들을 상속 혹은 프로토콜로 해결할수 있을까?**
+>   
+>일부분만 중복이 되는 경우는 프로토콜이 더 간편해 보이긴하나 중복되는 기능이 많아지면 상속이더 합리적으로 판단하여 상속으로 중복되는 기능을 해결하였습니다. ps.프로토콜의 경우 addTarget을 사용하지 못하여 상속을 선택한 이유가 늘었습니다.
+    
+>5️⃣ **Cache를 사용해 발생한 메모리 이슈**
+>
+>컬렉션뷰를 스크롤할때마다 Cell 에서 사용될 이미지 데이터를 서버에서 가져와 화면에 보여주는 방식을 사용했으나, 스크롤을 다시 위로 올리게 된다면 이전에 서버에서 가져왔던 이미지 데이터를 또다시 서버에서 가져오는 작업을 좀더 효율적으로 작업할수있도록 Cache 를 활용했다.
+>
+>하지만 Cache 를 활용함으로써 최대 상한선을 설정하지 않았기 때문에 서버에서 가져왔던 이미지 데이터를 모두 Cache 에 저장하는 상황이 발생 하였고 이로인해 앱을 실행후 Scroll 을 할수록 사용되는 메모리가 늘어나는것을 알수있었다.
+>(이 간단한 앱이 메모리를 1gb 까지 사용한다..)
+>
+>![](https://i.imgur.com/nqixlBD.png)
+>
+>이러한 문제를 해결하기위해 Cache 에 저장할수있는 아이템의 개수를 20개로 지정하여 최대 20개의 이미지만을 저장할수있도록 수정하였다.
+>
+>![](https://i.imgur.com/Jt31YcJ.png)
+
+>(눈에 띄게 개선된 모습을 확인할수 있다.)
+>
+>**변경전 코드**
+>```swift
+>struct Cache {
+>    static let cache = NSCache<NSURL, UIImage>()
+>    private init() {}
+>}
+>```
+>**변경후 코드**
+>```swift
+>struct Cache {
+>    static let cache: NSCache<NSURL, UIImage> = {
+>        let cache = NSCache<NSURL, UIImage>()
+>        cache.countLimit = 20
+>        return cache
+>    }()
+>   
+>    private init() {}
+>}
+>```
+
+>---  
+>## 질문한것들  
+>1️⃣ 키보드 관련 에러  
+>2️⃣ 스택뷰에서 특정뷰 삭제방법  
+>3️⃣ 사용하지 않는 값은 Void 처리  
+>4️⃣ 서버통신과 UI의 시점 문제  
+    
 >---    
->## 배운 개념
->
+>## 배운 개념  
+>1️⃣ `HTTP Method POST`  
+>2️⃣ `HTTP Method PATCH`  
+>3️⃣ `UIImagePicker`  
+>4️⃣ `NotificationCenter 를 이용한 keyboard 활용방법`  
+>5️⃣  추상클래스를 통해 공통기능 추상화  
+>6️⃣ `UITapGestureRecognizer 를 사용해 gesture 를 추가하는 방법`  
+    
 >---    
->## PR 후 개선사항
+>## PR 후 개선사항  
+>1️⃣ 파일정리  
+>2️⃣ 가독성있는네이밍변경  
+>3️⃣ stackView가 필요한 경우에만 사용  
+>4️⃣ 분리되어 있었던 View를 추상클래스와 결합  
+>5️⃣ extension을 적극적으로 활용  
+>6️⃣ 은닉화 캡슐화  
+>7️⃣ ViewLifeCycle을 더 합리적으로 사용  
+>8️⃣ enum의 활용도 증가  
