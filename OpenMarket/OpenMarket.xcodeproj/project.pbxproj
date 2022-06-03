@@ -35,7 +35,6 @@
 		865B43D9283DFDD30005B484 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B43D8283DFDD30005B484 /* Data.swift */; };
 		865B43DB283DFE310005B484 /* ProductInfomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B43DA283DFE310005B484 /* ProductInfomation.swift */; };
 		865B43E1283E1EA60005B484 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B43E0283E1EA60005B484 /* RegistrationViewController.swift */; };
-		865B43E3283E25A10005B484 /* ManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 865B43E2283E25A10005B484 /* ManagementView.swift */; };
 		8665CC6D28438A3E00DBBE27 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8665CC6C28438A3E00DBBE27 /* EditViewController.swift */; };
 		8665CC922844F7EE00DBBE27 /* ManagementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8665CC912844F7EE00DBBE27 /* ManagementType.swift */; };
 		869BD31A282D04EF00284FAE /* MockURLSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 869BD319282D04EF00284FAE /* MockURLSessionTest.swift */; };
@@ -107,7 +106,6 @@
 		865B43D8283DFDD30005B484 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		865B43DA283DFE310005B484 /* ProductInfomation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfomation.swift; sourceTree = "<group>"; };
 		865B43E0283E1EA60005B484 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
-		865B43E2283E25A10005B484 /* ManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementView.swift; sourceTree = "<group>"; };
 		8665CC6C28438A3E00DBBE27 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		8665CC912844F7EE00DBBE27 /* ManagementType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementType.swift; sourceTree = "<group>"; };
 		869BD317282D04EF00284FAE /* MockURLSessionTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MockURLSessionTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -232,7 +230,6 @@
 			isa = PBXGroup;
 			children = (
 				304D31B5283E29150016B148 /* Cell */,
-				865B43E2283E25A10005B484 /* ManagementView.swift */,
 				86A637D82835E02C00830118 /* SegmentControl.swift */,
 			);
 			path = View;
@@ -613,7 +610,6 @@
 				86CC60A42833489300AE2132 /* UIStackView.swift in Sources */,
 				8665CC922844F7EE00DBBE27 /* ManagementType.swift in Sources */,
 				3008F3D12834CDA60034C902 /* String.swift in Sources */,
-				865B43E3283E25A10005B484 /* ManagementView.swift in Sources */,
 				304197DD282A07D700083790 /* ProductList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

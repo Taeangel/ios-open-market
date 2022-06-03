@@ -206,16 +206,16 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
             return
         }
         
-        let reviseController = UINavigationController(
+        let editViewController = UINavigationController(
             rootViewController: EditViewController(product: product)
         )
         
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.backgroundColor = .white
-        reviseController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
-        reviseController.modalPresentationStyle = .fullScreen
+        editViewController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
+        editViewController.modalPresentationStyle = .fullScreen
         
-        self.present(reviseController, animated: true)
+        self.present(editViewController, animated: true)
     }
 }
 

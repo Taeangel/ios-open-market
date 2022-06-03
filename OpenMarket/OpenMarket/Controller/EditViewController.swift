@@ -20,7 +20,7 @@ final class EditViewController: ProductViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = baseView
+        setupView()
         managementType = ManagementType.edit
         setupNavigationItems()
         getDetailData()
@@ -45,7 +45,7 @@ final class EditViewController: ProductViewController {
         network.fetchData(from: .detailProduct(id: id)) { result in
             switch result {
             case .success(let product):
-                self.baseView.setupEditView(product: product)
+                self.setupEditView(product: product)
             case .failure(let error):
                 self.showAlert(title: Const.error, message: error.errorDescription)
             }

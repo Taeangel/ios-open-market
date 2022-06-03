@@ -21,21 +21,21 @@ final class RegistrationViewController: ProductViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        managementType = ManagementType.registration
         setupView()
+        managementType = ManagementType.registration
+        setupView1()
         setupNavigationItems()
         setupKeyboardNotification()
     }
     
-    private func setupView() {
+    private func setupView1() {
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapAddImageButton))
-        baseView.addImageView.addGestureRecognizer(gesture)
+        addImageView.addGestureRecognizer(gesture)
         
-        view = baseView
     }
     
     @objc private func didTapAddImageButton() {
@@ -74,10 +74,10 @@ extension RegistrationViewController: UIImagePickerControllerDelegate,
         
         let convertedImageView = convertSize(in: image)
         
-        if baseView.imagesStackView.arrangedSubviews.count == 5 {
-            baseView.addImageView.isHidden = true
+        if imagesStackView.arrangedSubviews.count == 5 {
+            addImageView.isHidden = true
         }
-        baseView.imagesStackView.insertArrangedSubview(convertedImageView, at: .zero)
+        imagesStackView.insertArrangedSubview(convertedImageView, at: .zero)
         
         picker.dismiss(animated: true, completion: nil)
     }
@@ -86,9 +86,9 @@ extension RegistrationViewController: UIImagePickerControllerDelegate,
         let imageView = UIImageView()
         imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
 
-        if image.getSize() > 300 {
+        if image.getSize() > Const.maxImageSize {
             imageView.image = image.resize(
-                newWidth: baseView.addImageView.image?.size.width ?? .zero
+                newWidth: addImageView.image?.size.width ?? .zero
             )
         }
         
