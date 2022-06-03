@@ -13,7 +13,6 @@ fileprivate enum Const {
     static let done = "Done"
     static let really = "Really?"
     static let postSuccesse = "Post Successe"
-    static let maxImageSize: Double = 300
 }
 
 final class RegistrationViewController: ProductViewController {
@@ -23,12 +22,12 @@ final class RegistrationViewController: ProductViewController {
         super.viewDidLoad()
         setupView()
         managementType = ManagementType.registration
-        setupView1()
+        setupRegistrationView()
         setupNavigationItems()
         setupKeyboardNotification()
     }
     
-    private func setupView1() {
+    private func setupRegistrationView() {
         self.imagePicker.sourceType = .photoLibrary
         self.imagePicker.allowsEditing = true
         self.imagePicker.delegate = self
@@ -76,10 +75,11 @@ extension RegistrationViewController: UIImagePickerControllerDelegate,
         let imageView = UIImageView(image: pickedImage)
         imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         
-        if imagesStackView.arrangedSubviews.count == 5 {
+        if imageCount == 5 {
             addImageView.isHidden = true
         }
-        imagesStackView.insertArrangedSubview(imageView, at: .zero)
+        
+        addImage(imageView: imageView)
         
         picker.dismiss(animated: true, completion: nil)
     }

@@ -23,6 +23,9 @@ fileprivate enum Const {
 class ProductViewController: UIViewController {
     let network = URLSessionProvider<DetailProduct>()
     var managementType: ManagementType?
+    var imageCount: Int {
+        return imagesStackView.arrangedSubviews.count
+    }
     
     private let imagesScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -31,7 +34,7 @@ class ProductViewController: UIViewController {
         return scrollView
     }()
     
-    let imagesStackView: UIStackView = {
+    private let imagesStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 10
@@ -115,6 +118,10 @@ class ProductViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
+    
+    func addImage(imageView: UIImageView) {
+        imagesStackView.insertArrangedSubview(imageView, at: .zero)
+    }
     
     func extractData() -> ProductInfomation {
         let name = nameTextField.text

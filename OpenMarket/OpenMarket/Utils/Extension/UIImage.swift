@@ -13,6 +13,7 @@ fileprivate enum Attribute {
     }
     
     enum Size {
+        static let maxImageSize: Double = 300
         static let kilobyte: Double = 1024
     }
 }
@@ -22,7 +23,7 @@ extension UIImage {
     func convertSize(size: CGFloat) -> UIImage {
         var image = UIImage()
         
-        if self.getSize() > 300 {
+        if self.getSize() > Attribute.Size.maxImageSize {
             image = self.resize(newWidth: size)
         }
         
