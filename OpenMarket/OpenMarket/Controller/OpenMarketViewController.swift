@@ -13,13 +13,12 @@ fileprivate enum Const {
 }
 
 final class OpenMarketViewController: UIViewController {
-    private let segmentControl = SegmentControl(items: LayoutType.inventory)
     private var layoutType = LayoutType.list
     private var collectionView: UICollectionView?
-    private var hasNetxPage = true
-    private var page = 1
+    private var hasNextPage: Bool?
+    private var page: Int?
     private var network: URLSessionProvider<ProductList>?
-    private var productList: [DetailProduct] = [] {
+    private var productList: [DetailProduct]? {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()
@@ -30,28 +29,35 @@ final class OpenMarketViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         network = URLSessionProvider()
-        fetchData(from: .productList(page: page, itemsPerPage: Const.itemPerPage))
         setupCollectionView()
         setupSegmentControl()
         setupAddButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.productList.removeAll()
+        self.productList?.removeAll()
         self.fetchData(from: .productList(page: 1, itemsPerPage: Const.itemPerPage))
     }
     
     private func fetchData(from: Endpoint) {
-        network?.fetchData(from: from, completionHandler: { result in
+        network?.fetchData(from: from, completionHandler: { [self] result in
             switch result {
             case .success(let data):
-                self.hasNetxPage = data.hasNext
+                self.hasNextPage = data.hasNext
                 self.page = data.pageNo ?? .zero
-                self.productList.append(contentsOf: data.pages ?? [])
+                appendList(data: data)
             case .failure(let error):
                 self.showAlert(title: Const.error, message: error.errorDescription)
             }
         })
+    }
+    
+    private func appendList(data: ProductList) {
+        if productList == nil {
+            productList = data.pages
+        } else {
+            self.productList?.append(contentsOf: data.pages ?? [])
+        }
     }
 }
 
@@ -80,6 +86,8 @@ extension OpenMarketViewController {
     }
     
     private func setupSegmentControl() {
+        let segmentControl = SegmentControl(items: LayoutType.inventory)
+        
         self.navigationItem.titleView = segmentControl
         segmentControl.addTarget(self, action: #selector(didChangeSegment), for: .valueChanged)
     }
@@ -135,11 +143,11 @@ extension OpenMarketViewController: UICollectionViewDataSourcePrefetching {
         guard let last = indexPaths.last else {
             return
         }
-
+        
         let currentPage = last.row / Const.itemPerPage
-
-        if currentPage + 1 == page, hasNetxPage == true {
-            fetchData(from: .productList(page: page + 1, itemsPerPage: Const.itemPerPage))
+        
+        if currentPage + 1 == page, hasNextPage == true {
+            fetchData(from: .productList(page: (page ?? 0) + 1, itemsPerPage: Const.itemPerPage))
         }
     }
 }
@@ -153,7 +161,9 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         
-        let product = productList[indexPath.item]
+        guard let product = productList?[indexPath.item] else {
+            return UICollectionViewCell()
+        }
         
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: layoutType.cell.identifier,
@@ -170,11 +180,18 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return productList.count
+        
+        guard let listCount = productList?.count else {
+            return 0
+        }
+        
+        return listCount
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let product = productList[indexPath.item]
+        guard let product = productList?[indexPath.item] else {
+            return
+        }
         
         let reviseController = UINavigationController(rootViewController: EditViewController(product: product))
         reviseController.modalPresentationStyle = .fullScreen
