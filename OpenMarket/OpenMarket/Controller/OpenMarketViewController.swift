@@ -201,6 +201,7 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         guard let product = productList?[indexPath.item] else {
             return
         }
@@ -208,6 +209,10 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
         let reviseController = UINavigationController(
             rootViewController: EditViewController(product: product)
         )
+        
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.backgroundColor = .white
+        reviseController.navigationBar.scrollEdgeAppearance = navigationBarAppearance
         reviseController.modalPresentationStyle = .fullScreen
         
         self.present(reviseController, animated: true)
