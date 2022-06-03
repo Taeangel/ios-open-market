@@ -120,7 +120,10 @@ extension OpenMarketViewController {
         
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .systemPink
-        refreshControl.attributedTitle = NSAttributedString(string: Const.loding, attributes: [.foregroundColor: UIColor.systemPink])
+        refreshControl.attributedTitle = NSAttributedString(
+            string: Const.loding,
+            attributes: [.foregroundColor: UIColor.systemPink]
+        )
         
         refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
@@ -142,7 +145,10 @@ extension OpenMarketViewController {
 // MARK: - CollectionViewDataSourcePrefetching
 
 extension OpenMarketViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        prefetchItemsAt indexPaths: [IndexPath]
+    ) {
         guard let last = indexPaths.last else {
             return
         }
@@ -150,7 +156,10 @@ extension OpenMarketViewController: UICollectionViewDataSourcePrefetching {
         let currentPage = last.row / Const.itemPerPage
         
         if currentPage + 1 == page, hasNextPage == true {
-            fetchProductList(from: .productList(page: (page ?? 0) + 1, itemsPerPage: Const.itemPerPage))
+            fetchProductList(from: .productList(
+                page: (page ?? 0) + 1,
+                itemsPerPage: Const.itemPerPage)
+            )
         }
     }
 }
@@ -196,7 +205,9 @@ extension OpenMarketViewController: UICollectionViewDataSource, UICollectionView
             return
         }
         
-        let reviseController = UINavigationController(rootViewController: EditViewController(product: product))
+        let reviseController = UINavigationController(
+            rootViewController: EditViewController(product: product)
+        )
         reviseController.modalPresentationStyle = .fullScreen
         
         self.present(reviseController, animated: true)

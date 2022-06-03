@@ -21,7 +21,9 @@ class ProductViewController: UIViewController {
         let name = baseView.nameTextField.text
         let price = Int(baseView.priceTextField.text ?? Const.zero)
         let discountedPrice = Int(baseView.discountedPriceTextField.text ?? Const.zero)
-        let currency = (CurrencyType(rawValue: baseView.segmentControl.selectedSegmentIndex) ?? CurrencyType.krw).description
+        let currency = (CurrencyType(
+            rawValue: baseView.segmentControl.selectedSegmentIndex) ?? CurrencyType.krw)
+            .description
         let stock = Int(baseView.stockTextField.text ?? Const.zero)
         let description = baseView.descriptionTextView.text
         let images: [ImageFile] = extractImage()
@@ -65,17 +67,29 @@ class ProductViewController: UIViewController {
 extension ProductViewController {
     
     func setupKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardDidHideNotification,
+            object: nil
+        )
         
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        let swipeDown = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(respondToSwipeGesture)
+        )
         swipeDown.direction = .down
         self.view.addGestureRecognizer(swipeDown)
     }
     
     @objc private func keyboardWillShow(notification: Notification) {
         
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
+                as? NSValue else {
             return
         }
         

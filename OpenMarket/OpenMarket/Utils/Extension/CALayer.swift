@@ -24,11 +24,21 @@ extension CALayer {
             case .top:
                 border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: thickness)
             case .bottom:
-                border.frame = CGRect.init(x: bottomLeftSpacing, y: frame.height - thickness, width: frame.width, height: thickness)
+                border.frame = CGRect.init(
+                    x: bottomLeftSpacing,
+                    y: frame.height - thickness,
+                    width: frame.width,
+                    height: thickness
+                )
             case .left:
                 border.frame = CGRect.init(x: 0, y: 0, width: thickness, height: frame.height)
             case .right:
-                border.frame = CGRect.init(x: frame.width, y: 0, width: thickness, height: frame.height)
+                border.frame = CGRect.init(
+                    x: frame.width,
+                    y: 0,
+                    width: thickness,
+                    height: frame.height
+                )
             case .all:
                 borderColor = color.cgColor
                 borderWidth = thickness

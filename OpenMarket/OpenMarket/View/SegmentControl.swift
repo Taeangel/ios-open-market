@@ -27,6 +27,7 @@ final class SegmentControl: UISegmentedControl {
 
         layer.addBorder(edges: [.all], color: .systemBlue, thickness: 2)
         selectedSegmentIndex = 0
-        widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width / 2.0).isActive = true
+        widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.size.width / 2.0)
+            .isActive = true
     }
 }

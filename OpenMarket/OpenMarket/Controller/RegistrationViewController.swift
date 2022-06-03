@@ -60,18 +60,19 @@ final class RegistrationViewController: ProductViewController {
 
 // MARK: - UIImagePicker
 
-extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension RegistrationViewController: UIImagePickerControllerDelegate,
+                                      UINavigationControllerDelegate {
     
     func imagePickerController(
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
        
-        guard let pickerImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
             return
         }
         
-        let convertedImageView = convertSize(in: pickerImage)
+        let convertedImageView = convertSize(in: image)
         
         if baseView.imagesStackView.arrangedSubviews.count == 5 {
             baseView.addImageView.isHidden = true
@@ -86,7 +87,9 @@ extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigat
         imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
 
         if image.getSize() > 300 {
-            imageView.image = image.resize(newWidth: baseView.addImageView.image?.size.width ?? .zero)
+            imageView.image = image.resize(
+                newWidth: baseView.addImageView.image?.size.width ?? .zero
+            )
         }
         
         imageView.image = image

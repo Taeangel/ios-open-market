@@ -155,7 +155,12 @@ extension ManagementView {
             addsubViews(imagesScrollView, textFieldStackView, descriptionTextView)
             imagesScrollView.addSubview(imagesStackView)
             imagesStackView.addArrangedsubViews(addImageView)
-            textFieldStackView.addArrangedsubViews(nameTextField, priceStackView, discountedPriceTextField, stockTextField)
+            textFieldStackView.addArrangedsubViews(
+                nameTextField,
+                priceStackView,
+                discountedPriceTextField,
+                stockTextField
+            )
             priceStackView.addArrangedsubViews(priceTextField, segmentControl)
         }
         

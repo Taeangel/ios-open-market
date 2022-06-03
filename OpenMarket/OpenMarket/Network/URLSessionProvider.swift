@@ -64,14 +64,23 @@ struct URLSessionProvider<T: Decodable> {
         params: ProductInfomation,
         completionHandler: @escaping (Result<Void, NetworkError>) -> Void) {
         
-        guard var urlRequest = makeURLRequest(httpMethod: .post, url: Endpoint.productRegistration) else {
+        guard var urlRequest = makeURLRequest(
+            httpMethod: .post,
+            url: Endpoint.productRegistration
+        ) else {
             return completionHandler(.failure(.urlError))
         }
         
         let boundary = UUID().uuidString
         
-        urlRequest.addValue(OpenMarket.identifier.description, forHTTPHeaderField: "identifier")
-        urlRequest.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue(
+            OpenMarket.identifier.description,
+            forHTTPHeaderField: "identifier"
+        )
+        urlRequest.addValue(
+            "multipart/form-data; boundary=\(boundary)",
+            forHTTPHeaderField: "Content-Type"
+        )
         
         urlRequest.httpBody = createBody(params: params, boundary: boundary)
         let task = session.dataTask(with: urlRequest) { _, urlResponse, error in
@@ -98,7 +107,10 @@ struct URLSessionProvider<T: Decodable> {
         completionHandler: @escaping (Result<Void, NetworkError>
     ) -> Void) {
         
-        guard var urlRequest = makeURLRequest(httpMethod: .patch, url: .detailProduct(id: id)) else {
+        guard var urlRequest = makeURLRequest(
+            httpMethod: .patch,
+            url: .detailProduct(id: id)
+        ) else {
             return completionHandler(.failure(.urlError))
         }
         

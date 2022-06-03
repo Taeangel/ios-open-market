@@ -79,10 +79,20 @@ extension EditViewController {
     private func setupNavigationItems() {
         self.navigationItem.title = managementType?.type
         
-        let cancelButton = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(didTapCancelButton))
+        let cancelButton = UIBarButtonItem(
+            title: Const.cancel,
+            style: .plain,
+            target: self,
+            action: #selector(didTapCancelButton)
+        )
         navigationItem.leftBarButtonItem = cancelButton
         
-        let doneButton = UIBarButtonItem(title: Const.done, style: .plain, target: self, action: #selector(didTapDoneButton))
+        let doneButton = UIBarButtonItem(
+            title: Const.done,
+            style: .plain,
+            target: self,
+            action: #selector(didTapDoneButton)
+        )
         navigationItem.rightBarButtonItem = doneButton
     }
     
