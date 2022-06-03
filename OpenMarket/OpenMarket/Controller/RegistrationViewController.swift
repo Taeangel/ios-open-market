@@ -13,7 +13,7 @@ fileprivate enum Const {
     static let done = "Done"
     static let really = "Really?"
     static let postSuccesse = "Post Successe"
-    
+    static let maxImageSize: Double = 300
 }
 
 final class RegistrationViewController: ProductViewController {
