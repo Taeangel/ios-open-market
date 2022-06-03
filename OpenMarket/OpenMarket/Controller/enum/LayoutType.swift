@@ -15,6 +15,20 @@ enum LayoutType: Int, CaseIterable {
         return Self.allCases.map { $0.description }
     }
     
+    func size(width: CGFloat, height: CGFloat) -> CGSize {
+           switch self {
+               case .list: return CGSize(width: width, height: height / 14)
+               case .grid: return CGSize(width: width / 2.2, height: height / 3)
+           }
+       }
+    
+    func edgeInset() -> UIEdgeInsets {
+           switch self {
+               case .list: return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+               case .grid: return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+           }
+       }
+    
     private var description: String {
         switch self {
         case .list:

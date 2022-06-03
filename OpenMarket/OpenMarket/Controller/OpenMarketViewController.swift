@@ -224,12 +224,7 @@ extension OpenMarketViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         
-        switch layoutType {
-        case .list:
-            return CGSize(width: view.frame.width, height: view.frame.height / 14)
-        case .grid:
-            return CGSize(width: view.frame.width / 2.2, height: view.frame.height / 3)
-        }
+        layoutType.size(width: view.frame.width, height: view.frame.height)
     }
     
     func collectionView(
@@ -238,11 +233,6 @@ extension OpenMarketViewController: UICollectionViewDelegateFlowLayout {
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         
-        switch layoutType {
-        case .list:
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        case .grid:
-            return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        }
+        layoutType.edgeInset()
     }
 }
