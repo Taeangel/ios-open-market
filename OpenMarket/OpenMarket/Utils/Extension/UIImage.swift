@@ -19,7 +19,17 @@ fileprivate enum Attribute {
 
 extension UIImage {
     
-    func getSize() -> Double {
+    func convertSize(size: CGFloat) -> UIImage {
+        var image = UIImage()
+        
+        if self.getSize() > 300 {
+            image = self.resize(newWidth: size)
+        }
+        
+        return image
+    }
+    
+    private func getSize() -> Double {
         guard let data = self.jpegData(compressionQuality: Attribute.Quality.highest) else {
             return .zero
         }
@@ -28,7 +38,7 @@ extension UIImage {
         return size
     }
     
-    func resize(newWidth: CGFloat) -> UIImage {
+    private func resize(newWidth: CGFloat) -> UIImage {
         let scale = newWidth / self.size.width
         let newHeight = self.size.height * scale
         

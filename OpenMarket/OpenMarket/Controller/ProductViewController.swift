@@ -30,6 +30,7 @@ class ProductViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
     let imagesStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -37,6 +38,7 @@ class ProductViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
     var addImageView: UIImageView = {
         let image = UIImageView()
         image.isUserInteractionEnabled = true
@@ -44,6 +46,7 @@ class ProductViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
+    
     private let textFieldStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -52,6 +55,7 @@ class ProductViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
     private var nameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Const.Product.name
@@ -60,6 +64,7 @@ class ProductViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
     private let priceStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -67,6 +72,7 @@ class ProductViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
     private let priceTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Const.Product.price
@@ -76,12 +82,14 @@ class ProductViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
     private let segmentControl: UISegmentedControl = {
         let segmentControl = UISegmentedControl(items: CurrencyType.inventory)
         segmentControl.selectedSegmentIndex = 0
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentControl
     }()
+    
     private let discountedPriceTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Const.Product.discountedPrice
@@ -91,6 +99,7 @@ class ProductViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
     private let stockTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Const.Product.stock
@@ -100,12 +109,12 @@ class ProductViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
     private let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
-
     
     func extractData() -> ProductInfomation {
         let name = nameTextField.text

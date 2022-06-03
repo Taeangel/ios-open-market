@@ -72,28 +72,16 @@ extension RegistrationViewController: UIImagePickerControllerDelegate,
             return
         }
         
-        let convertedImageView = convertSize(in: image)
+        let pickedImage = image.convertSize(size: addImageView.image?.size.width ?? .zero)
+        let imageView = UIImageView(image: pickedImage)
+        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
         
         if imagesStackView.arrangedSubviews.count == 5 {
             addImageView.isHidden = true
         }
-        imagesStackView.insertArrangedSubview(convertedImageView, at: .zero)
+        imagesStackView.insertArrangedSubview(imageView, at: .zero)
         
         picker.dismiss(animated: true, completion: nil)
-    }
-    
-    private func convertSize(in image: UIImage) -> UIImageView {
-        let imageView = UIImageView()
-        imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
-
-        if image.getSize() > Const.maxImageSize {
-            imageView.image = image.resize(
-                newWidth: addImageView.image?.size.width ?? .zero
-            )
-        }
-        
-        imageView.image = image
-        return imageView
     }
 }
 
