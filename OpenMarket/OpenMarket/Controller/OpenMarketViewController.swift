@@ -35,11 +35,13 @@ final class OpenMarketViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.productList?.removeAll()
-        self.fetchData(from: .productList(page: 1, itemsPerPage: Const.itemPerPage))
+        if !isMovingFromParent {
+            self.productList?.removeAll()
+            self.fetchProductList(from: .productList(page: 1, itemsPerPage: Const.itemPerPage))
+        }
     }
     
-    private func fetchData(from: Endpoint) {
+    private func fetchProductList(from: Endpoint) {
         network?.fetchData(from: from, completionHandler: { [self] result in
             switch result {
             case .success(let data):
@@ -131,7 +133,8 @@ extension OpenMarketViewController {
     }
     
     @objc func pullToRefresh() {
-        self.fetchData(from: .productList(page: 1, itemsPerPage: Const.itemPerPage))
+        self.productList?.removeAll()
+        self.fetchProductList(from: .productList(page: 1, itemsPerPage: Const.itemPerPage))
         self.collectionView?.refreshControl?.endRefreshing()
     }
 }
@@ -147,7 +150,7 @@ extension OpenMarketViewController: UICollectionViewDataSourcePrefetching {
         let currentPage = last.row / Const.itemPerPage
         
         if currentPage + 1 == page, hasNextPage == true {
-            fetchData(from: .productList(page: (page ?? 0) + 1, itemsPerPage: Const.itemPerPage))
+            fetchProductList(from: .productList(page: (page ?? 0) + 1, itemsPerPage: Const.itemPerPage))
         }
     }
 }
